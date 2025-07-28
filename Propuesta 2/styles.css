@@ -1,0 +1,398 @@
+body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    background-color: #ffffff;
+    color: #202e5f;
+}
+
+.hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+.video-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 2;
+    align-items: flex-end; /* Alinea los elementos a la derecha */
+}
+
+/* Estilos para todos los botones de control */
+.video-controls button {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.3;
+    transition: opacity 0.3s, background-color 0.3s;
+    /* Asegurar que todos los botones tengan el mismo tamaño */
+    width: 40px; /* Ancho fijo */
+    height: 40px; /* Alto fijo */
+    display: flex; /* Para centrar el ícono */
+    justify-content: center; /* Para centrar el ícono */
+    align-items: center; /* Para centrar el ícono */
+}
+
+.video-controls button:hover {
+    opacity: 0.7;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.video-controls button:active {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Contenedor para el botón de mute y el control de volumen */
+.mute-volume-wrapper {
+    position: relative; /* Esencial para posicionar el slider absolutamente respecto a este */
+    /* Mantener el tamaño para que el hover funcione sobre el área del botón */
+    width: 40px; /* Igual que el width del botón */
+    height: 40px; /* Igual que el height del botón */
+    display: flex; /* Para asegurar que el botón se posicione correctamente */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Ocultar el botón de mute para que solo se vea su fondo, y el ícono esté en el wrapper */
+/* No, mejor NO ocultamos el botón, así su estilo se aplica directamente.
+   En su lugar, el slider se posicionará sobre él.
+   El botón `#mute-toggle` dentro de `.mute-volume-wrapper` ya tiene los estilos de `.video-controls button`
+   porque está dentro del `.video-controls` padre.
+*/
+
+#volume-slider {
+    position: absolute; /* Clave: posicionar el slider de forma absoluta */
+    bottom: 0; /* Empieza desde la parte inferior del .mute-volume-wrapper */
+    left: 0; /* Se alinea a la izquierda del .mute-volume-wrapper */
+
+    /* Ocultar y colapsar el slider por defecto */
+    opacity: 0;
+    height: 0; /* Colapsa la altura para que se despliegue verticalmente */
+    width: 40px; /* Misma anchura que el botón */
+    margin-bottom: 0; /* No hay margen inicialmente */
+
+    transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out, bottom 0.3s ease-in-out;
+    overflow: hidden; /* Asegura que no se vea el "pulgar" al estar oculto */
+    transform-origin: bottom; /* Para que la transición de altura se vea como un despliegue hacia arriba */
+
+    /* Estilos del slider (barra) */
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.5); /* Fondo semitransparente */
+    outline: none;
+    border-radius: 4px;
+    cursor: pointer;
+    /* Para que sea vertical */
+    writing-mode: bt-lr; /* IE, Edge */
+    -webkit-appearance: slider-vertical; /* Chrome, Safari, Opera, Edge */
+    transform: rotate(180deg); /* Gira el slider para que 0 esté abajo y 1 arriba */
+}
+
+
+/* Estilos del "pulgar" (thumb) del slider */
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #007bff; /* Color del "pulgar" */
+    cursor: grab;
+}
+
+#volume-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #007bff;
+    cursor: grab;
+}
+
+
+/* Mostrar el slider al pasar el mouse por encima del wrapper */
+.mute-volume-wrapper:hover #volume-slider {
+    opacity: 1;
+    height: 100px; /* Altura que deseas que tenga el slider al desplegarse */
+    bottom: 50px; /* Desplázalo hacia arriba para que esté encima del botón.
+                    (Altura del botón + espacio, ej. 40px del botón + 10px de espacio) */
+}
+
+
+/* --- Tu CSS existente continúa desde aquí --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #202e5f;
+    padding: 10px;
+    text-align: center;
+    z-index: 1000;
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+section {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.merch-items {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.item img {
+    width: 200px;
+    height: 250px; /* Altura fija */
+    object-fit: cover; /* O 'contain' si no quieres recortar la imagen */
+    border: 2px solid #202e5f;
+    border-radius: 10px;
+}
+
+.galeria {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.galeria img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+    transition: transform 0.2s;
+}
+
+.galeria img:hover {
+    transform: scale(1.05);
+}
+
+footer {
+    background-color: #202e5f;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.contact-form {
+    max-width: 600px;
+    margin: 30px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 10px;
+    border: 2px solid #202e5f;
+    border-radius: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    color: #202e5f;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #2c3e90;
+    background-color: #ffffff;
+}
+
+.contact-form button {
+    padding: 12px;
+    background-color: #202e5f;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.contact-form button:hover {
+    background-color: #2c3e90;
+}
+
+.logo-img {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.logo-navbar-img {
+    max-width: 75px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.navbar {
+    position: fixed; /* Cambiado de relative a fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #202e5f;
+    padding: 10px 0;
+    text-align: center;
+    z-index: 1000;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logo-navbar-img {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 75px;
+    width: 100%;
+    height: auto;
+}
+
+.navbar-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    gap: 20px;
+}
+
+.navbar-menu li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 220px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.item p {
+    margin-top: 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
+body.dark-mode {
+    background-color: #202e5f;
+    color: #eee;
+}
+
+.navbar a {
+    color: #eee; /* Color oscuro para los enlaces en modo claro */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease; /* Transición para el color del texto */
+}
+
+body.dark-mode .navbar {
+    background-color: #eee; /* Fondo de la navbar CLARO en modo OSCURO */
+    color: #202e5f; /* Texto de la navbar OSCURO en modo OSCURO (si lo hay en la navbar directamente) */
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 4px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 999;
+    opacity: 1;
+    transition: opacity 0.3s;
+    color: #eee;
+}
+
+.theme-toggle:hover {
+    opacity: 1;
+}
+
+body.dark-mode .navbar a {
+    color: #202e5f; /* Texto de los enlaces OSCURO en modo OSCURO */
+}
+
+body.dark-mode .theme-toggle {
+    color: #202e5f; /* Color del icono en modo OSCURO */
+}
+
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    top: 0;
+    left: 0;
+}
+
+#tsparticles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* para que esté detrás de todo */
+  top: 0;
+  left: 0;
+}
+
+.countdown-timer {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #202e5f;
+    text-align: center;
+    margin-top: 20px;
+    transition: color 0.3s ease; 
+}
+
+body.dark-mode .countdown-timer {
+    color: #eee; /* Cambia a color claro cuando el body tiene dark-mode */
+}
+
