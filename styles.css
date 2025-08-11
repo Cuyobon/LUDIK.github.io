@@ -397,3 +397,25 @@ body.dark-mode .countdown-timer {
     color: #eee; /* Cambia a color claro cuando el body tiene dark-mode */
 }
 
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 600px) {
+    .navbar ul {
+        display: flex;
+        justify-content: center; /* Centra el contenido */
+        align-items: center;
+    }
+
+    /* Oculta todos los elementos excepto el logo */
+    .navbar ul li,
+    .navbar ul button {
+        display: none;
+    }
+
+    /* Centra el logo */
+    .logo-navbar-img {
+        display: block;
+        margin: 0 auto;
+        height: 40px; /* ajusta si quieres más grande o chico */
+    }
+}
+
