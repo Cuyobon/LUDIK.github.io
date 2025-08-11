@@ -411,11 +411,14 @@ body.dark-mode .countdown-timer {
         display: none;
     }
 
-    /* Centra el logo */
+    /* Centra el logo quitándole la posición absoluta */
     .logo-navbar-img {
-        display: block;
+        position: static !important;  /* Quita position absolute */
         margin: 0 auto;
-        height: 40px; /* ajusta si quieres más grande o chico */
+        height: 40px; /* ajusta el tamaño */
+        left: auto !important;  /* Elimina left */
+        top: auto !important;   /* Elimina top */
+        transform: none !important; /* Quita transform */
+        display: block;
     }
 }
-
