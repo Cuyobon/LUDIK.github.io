@@ -81,7 +81,7 @@ if (toggleButton) {
 }
 
 // ⏳ Countdown
-const eventDate = new Date("2025-08-04T20:00:00").getTime();
+const eventDate = new Date("2025-08-12T12:00:00").getTime();
 const countdownEl = document.getElementById("countdown");
 
 setInterval(() => {
@@ -100,3 +100,4 @@ setInterval(() => {
 
     countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }, 1000);
+
